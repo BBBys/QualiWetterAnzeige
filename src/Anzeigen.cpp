@@ -1,10 +1,34 @@
 /**
  * @file Anzeigen.cpp
- * Wetterdaten nach Umrechnung an Servo-Motoren übertragen.
- * nur bei der Temperatur ist die Abhängigkeit von der Jahreszeit statistisch signifikant (95-%-Niveau)
+ * Messwerte der Wetterdaten in Winkel für die Zeigerstellung umrechnen.
+ * Berücksichtigt werden Temperatur, relative Luftfeuchte, Luftdruck und Windeschwindigkeit
+ * 
+ * Dabei soll die Umrechnung so vorgenommen werden, dass 
+ *  -   der gesammte Stellbereich (0° ... 180°) ausgenutzt wird
+ *  -   der Mittlere Wert durch den Zeiger in der als 90°-Stellung angezeigt wird.
+ * 
+ * Beispiel:
+ * die Luftfeuchte (relative Feuchte r.F.) erreicht bei Regen 93 bis 100 % r.F., fällt aber selten(*) unter 40 % r.F. und nie(*) unter 13 % r.F.
+ * Zeigerstellung bei  13 % r.F. -->   0° (also linker Rand)
+ * Zeigerstellung bei  40 % r.F. -->   9°
+ * Zeigerstellung bei  93 % r.F. --> 171°
+ * Zeigerstellung bei 100 % r.F. --> 180° (rechter Rand)
+ * weiter liegen die Messwerte in der Hälfte der Zeit(*) unter 81 %
+ * Zeigerstellung bei  81 % r.F. -->  90° (also Mitte)
+ * 
+ * 
+ * Da die Werte zum Teil von der Jahreszeit abhängig sind, 
+ * -    Temperatur im Sommer und Herbst höher als im Frühling und Winter
+ * -    Luftfeuchte im Frühling und Sommer niedriger als im Herbst und Winter
+ * wird die Umrechnung auch angepasst (die Unterschiede bei Luftdruck und Windgeschwindigkeit sind statistisch(*) nicht signifikant)
+ * 
+ * (*) ausgewertet wurden ca. 16.000 Messwerte in stündlichem Abstand von Mai 2019 bis März 2021
+ * 
+ * nach Umrechnung an Servo-Motoren übertragen.
+ * 
  * @author Dr. Burkhard Borys, Zeller Ring 15, 34246 Vellmar, Deutschland
  * @version 1.1
- * @date 16 Jan 2022 16 Dez 22 Nov 2021
+ * @date 18 16 Jan 2022 16 Dez 22 Nov 2021
  * @copyright Copyright (c) 2021-2022 B. Borys
 */
 #include "wettertafel.h"
@@ -40,9 +64,9 @@ double dmap(double in, double in_min, double in_max, double out_min, double out_
  * 
  * Perzentile ganzes Jahr
  * 
- * Perzentile:  Min 5   10  25  50  75    90    95    Max
- * Feuchte:     13  40  48	66	81	89	  93	  100	  100
- * Winkel:      0°	9°	19°	47°	95°	142°	171°	180°	180°
+ * Perzentile:  Min 5   10  25  50  75    90   95   Max
+ * Feuchte:     13  40  48	66	81	89	  93  100   100
+ * Winkel:      0°	9°	19°	47°	95°	142° 171° 180°	180°
  * 
  */
 void AnzeigenF(int feuchte)
