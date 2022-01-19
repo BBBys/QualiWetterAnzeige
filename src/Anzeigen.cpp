@@ -4,7 +4,7 @@
  * Berücksichtigt werden Temperatur, relative Luftfeuchte, Luftdruck und Windeschwindigkeit
  * 
  * Dabei soll die Umrechnung so vorgenommen werden, dass 
- *  -   der gesammte Stellbereich (0° ... 180°) ausgenutzt wird
+ *  -   der gesamte Stellbereich (0° ... 180°) ausgenutzt wird
  *  -   der Mittlere Wert durch den Zeiger in der als 90°-Stellung angezeigt wird.
  * 
  * Beispiel:
