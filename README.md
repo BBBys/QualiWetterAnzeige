@@ -1,7 +1,7 @@
 # Qualitative Wetteranzeige
 QualiWetterAnzeige
 
-Anzeige von Wetterdaten (Temperatur, Druck, Feuchte, Wind) als qualitative Werte (hoch/niedrig, stark/schwach ...) durch Zeiger, angetrieben von Servo-Motoren
+Anzeige von Wetterdaten (Temperatur, Druck, Feuchte, Wind, Mondphase) als qualitative Werte (hoch/niedrig, stark/schwach ...) durch Zeiger, angetrieben von Servo-Motoren
 
 Berücksichtigt werden Temperatur, relative Luftfeuchte, Luftdruck und Windeschwindigkeit
 

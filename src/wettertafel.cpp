@@ -4,7 +4,7 @@
  * ============================================================================
  * @author Dr. Burkhard Borys, Zeller Ring 15, 34246 Vellmar, Deutschland
  * @version 1.1
- * @date 16 Jan 2022 16 Dez 21 20 Nov 26 Okt 30 19 Sep 2021
+ * @date 21 16 Jan 2022 16 Dez 21 20 Nov 26 Okt 30 19 Sep 2021
  * @copyright Copyright (c) 2021-2022 B. Borys
  */
 
@@ -13,7 +13,7 @@
 extern uint8_t Jahreszeit, WinkelF, WinkelT, WinkelD, WinkelW;
 /// Servo?
 #ifdef SERVO
-extern Servo ZeigerT, ZeigerF, ZeigerD, ZeigerW; // create servo object to control a servo
+extern Servo ZeigerT, ZeigerF, ZeigerD, ZeigerW, ZeigerM; // create servo object to control a servo
 #endif        // Servo
 
 /**
@@ -63,6 +63,7 @@ void schlafen()
   ZeigerT.detach();
   ZeigerD.detach();
   ZeigerW.detach();
+  ZeigerM.detach();
 #endif
   delay(1000);
 #ifdef NDEBUG
@@ -95,18 +96,19 @@ void onConnectionEstablished()
                    { AnzeigenT(payload.toFloat()); });
   MQTTClient.subscribe("Wetter/Druck", [](const String &payload)
                    { AnzeigenD(payload.toInt()); });
-  MQTTClient.subscribe("Wettertafel/direkt", [](const String &payload) 
-                   {/// direktes Stellen zum Testen
+  MQTTClient.subscribe("Datum/Mond", [](const String &payload)
+                       { AnzeigenM(payload.toFloat()); });
+  MQTTClient.subscribe("Wettertafel/direkt", [](const String &payload) { /// direktes Stellen zum Testen
 #ifdef SERVO
-                     WinkelF = Stellen(ZeigerF, WinkelF, payload.toInt());
-                     WinkelT = Stellen(ZeigerT, WinkelT, payload.toInt());
-                     WinkelD = Stellen(ZeigerD, WinkelD, payload.toInt());
-                     WinkelW = Stellen(ZeigerW, WinkelW, payload.toInt());
+    WinkelF = Stellen(ZeigerF, WinkelF, payload.toInt());
+    WinkelT = Stellen(ZeigerT, WinkelT, payload.toInt());
+    WinkelD = Stellen(ZeigerD, WinkelD, payload.toInt());
+    WinkelW = Stellen(ZeigerW, WinkelW, payload.toInt());
 #endif //SERVO
 #ifndef NDEBUG
-                     Serial.println("...Stellen fertig");
+    Serial.println("...Stellen fertig");
 #endif
-                   });
+  });
   MQTTClient.publish("SWVersion", VERSION);
   MQTTClient.publish("SWDatum", __DATE__);
   MQTTClient.publish("OTA-Usr", OTAUSER);
@@ -150,6 +152,7 @@ void setup()
  * D4 hängt mit der LED zusammen?
  */
   ZeigerF.attach(D1, 500, 2500);
+  ZeigerM.attach(D2, 500, 2500);
   ZeigerT.attach(D6, 500, 2500);
   ZeigerD.attach(D3, 500, 2500);
   ZeigerW.attach(D8, 500, 2500);

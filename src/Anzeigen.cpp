@@ -4,7 +4,7 @@
  * Berücksichtigt werden Temperatur, relative Luftfeuchte, Luftdruck und Windeschwindigkeit
  * 
  * Dabei soll die Umrechnung so vorgenommen werden, dass 
- *  -   der gesamte Stellbereich (0° ... 180°) ausgenutzt wird
+ *  -   der gesammte Stellbereich (0° ... 180°) ausgenutzt wird
  *  -   der Mittlere Wert durch den Zeiger in der als 90°-Stellung angezeigt wird.
  * 
  * Beispiel:
@@ -28,19 +28,19 @@
  * 
  * @author Dr. Burkhard Borys, Zeller Ring 15, 34246 Vellmar, Deutschland
  * @version 1.1
- * @date 18 16 Jan 2022 16 Dez 22 Nov 2021
+ * @date 21 18 16 Jan 2022 16 Dez 22 Nov 2021
  * @copyright Copyright (c) 2021-2022 B. Borys
 */
 #include "wettertafel.h"
 
 /**
  * @brief die Servos
- * für Druck, Temperatur, Feuchtigkeit und Windstärke
+ * für Druck, Temperatur, Feuchtigkeit, Mondphase und Windstärke
  */
-Servo ZeigerT,ZeigerF, ZeigerD, ZeigerW; 
+Servo ZeigerT, ZeigerF, ZeigerD, ZeigerW, ZeigerM;
 /// Jahreszeit 0: unbekannt, 1..4: Frühling..Winter
 uint8_t Jahreszeit = 0;
-uint8_t WinkelF = 90, WinkelT = 90, WinkelD = 90, WinkelW = 90;
+uint8_t WinkelF = 90, WinkelT = 90, WinkelD = 90, WinkelW = 90, WinkelM = 90;
 const uint8_t DELAY = 60;
 
 /**
@@ -291,5 +291,28 @@ void AnzeigenW(float wind)
 #endif
 #ifdef SERVO
     WinkelW = Stellen(ZeigerW, WinkelW, (int)(180.5 - ziel), DELAY);
+#endif //SERVO
+}
+/**
+ * @brief Anzeige der Mondphase
+ * Die Mondphase wird als Phasenwinkel übergeben:
+ * Neumond:    0
+ * zunehmend:  0 ... Pi
+ * Vollmond:   Pi (3.14...)
+ * abnehmend:  Pi ... 2 Pi
+ * Neumond:    2 Pi (6.28...)
+ * @param Mondphase 
+ */
+void AnzeigenM(float Mondphase)
+{
+    float ziel;
+    const int anzahl = 9;
+    ziel = 180*Mondphase/(PI+PI);    // einfache lineare Umrechnung 
+#ifndef NDEBUG
+    Serial.print("Anzeigen Mond: ");
+    Serial.println(Mondphase);
+#endif
+#ifdef SERVO
+    WinkelM = Stellen(ZeigerM, WinkelM, ziel, DELAY);
 #endif //SERVO
 }
