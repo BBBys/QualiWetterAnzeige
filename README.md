@@ -25,5 +25,5 @@ Da die Werte zum Teil von der Jahreszeit abhängig sind,
 
 wird die Umrechnung auch angepasst (die Unterschiede bei Luftdruck und Windgeschwindigkeit sind statistisch(1) nicht signifikant)
 
-(1) ausgewertet wurden ca. 16.000 Messwerte in stündlichem Abstand von Mai 2019 bis März 2021
-(2) Medianwert 
+* (1) ausgewertet wurden ca. 16.000 Messwerte in stündlichem Abstand von Mai 2019 bis März 2021
+- (2) Medianwert 
