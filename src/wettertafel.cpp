@@ -3,18 +3,24 @@
  * Qualitative Anzeige von Wetterdaten auf einer Wettertafel über Servo-Motoren
  * ============================================================================
  * @author Dr. Burkhard Borys, Zeller Ring 15, 34246 Vellmar, Deutschland
- * @version 1.1
- * @date 21 16 Jan 2022 16 Dez 21 20 Nov 26 Okt 30 19 Sep 2021
+ * @version 2.0
+ * @date 25 Feb 21 16 Jan 2022 16 Dez 21 20 Nov 26 Okt 30 19 Sep 2021
  * @copyright Copyright (c) 2021-2022 B. Borys
  */
-
+#include <Arduino.h>
+#include <Wire.h>
 #include "wettertafel.h"
 #include <Ticker.h> // Load library "ticker"
 extern uint8_t Jahreszeit, WinkelF, WinkelT, WinkelD, WinkelW;
 /// Servo?
 #ifdef SERVO
 extern Servo ZeigerT, ZeigerF, ZeigerD, ZeigerW, ZeigerM; // create servo object to control a servo
-#endif        // Servo
+#else
+#include <Adafruit_PWMServoDriver.h>
+// called this way, it uses the default address 0x40
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+extern int ZeigerT, ZeigerF, ZeigerD, ZeigerW, ZeigerM;
+#endif // Servo
 
 /**
  * @brief blinken
@@ -84,7 +90,7 @@ void onConnectionEstablished()
 #ifndef NDEBUG
   Serial.println("onConnectionEstablished");
 #endif
-  WinkelW = Stellen(ZeigerW, WinkelW, 100);
+  WinkelW = Stellen  (ZeigerW, WinkelW, 100);
 #ifdef MQTTein
   MQTTClient.subscribe("Datum/JZeit", [](const String &payload)
                    { Jahreszeit = payload.toInt(); });
@@ -163,7 +169,7 @@ void setup()
   WinkelD = Stellen(ZeigerD, WinkelD, 0);
   WinkelW = Stellen(ZeigerW, WinkelW, 0);
 #endif
-#endif //SERVOS
+#endif //SERVO
 #ifdef MQTTein
 #ifdef NDEBUG
   MQTTClient.enableDebuggingMessages(false);

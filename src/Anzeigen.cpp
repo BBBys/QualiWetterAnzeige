@@ -27,17 +27,25 @@
  * nach Umrechnung an Servo-Motoren übertragen.
  * 
  * @author Dr. Burkhard Borys, Zeller Ring 15, 34246 Vellmar, Deutschland
- * @version 1.1
- * @date 21 18 16 Jan 2022 16 Dez 22 Nov 2021
+ * @version 2.0
+ * @date 25 Feb 21 18 16 Jan 2022 16 Dez 22 Nov 2021
  * @copyright Copyright (c) 2021-2022 B. Borys
 */
 #include "wettertafel.h"
 
+#ifdef SERVO
 /**
  * @brief die Servos
  * für Druck, Temperatur, Feuchtigkeit, Mondphase und Windstärke
  */
 Servo ZeigerT, ZeigerF, ZeigerD, ZeigerW, ZeigerM;
+#else
+/**
+ * @brief die Adressen der Servos
+ * für Druck, Temperatur, Feuchtigkeit, Mondphase und Windstärke
+ */
+int ZeigerT, ZeigerF, ZeigerD, ZeigerW, ZeigerM;
+#endif
 /// Jahreszeit 0: unbekannt, 1..4: Frühling..Winter
 uint8_t Jahreszeit = 0;
 uint8_t WinkelF = 90, WinkelT = 90, WinkelD = 90, WinkelW = 90, WinkelM = 90;
@@ -111,10 +119,7 @@ void AnzeigenF(int feuchte)
     Serial.print("Anzeigen %r.F.: ");
     Serial.println(feuchte);
 #endif
-
-#ifdef SERVO
     WinkelF = Stellen(ZeigerF, WinkelF, (int)(180.5 - ziel), DELAY);
-#endif //SERVO
 }
 /**
  * @brief Luftdruck in qualitative Zeigerstellung in Grad umrechnen
@@ -168,9 +173,7 @@ void AnzeigenD(int druck)
     Serial.print("Anzeigen Druck: ");
     Serial.println(druck);
 #endif
-#ifdef SERVO
     WinkelD = Stellen(ZeigerD, WinkelD, (int)(180.5 - ziel), DELAY);
-#endif //SERVO
 }
 /**
  * @brief Temperatur in qualitative Zeigerstellung in Grad umrechnen
@@ -232,9 +235,7 @@ void AnzeigenT(float temp)
     Serial.print("Anzeigen Temp: ");
     Serial.println(temp);
 #endif
-#ifdef SERVO
     WinkelT = Stellen(ZeigerT, WinkelT, (int)(180.5 - ziel), DELAY);
-#endif //SERVO
 }
 /**
  * @brief windgeschwindigkeit in qualitative Zeigerstellung in Grad umrechnen
@@ -289,9 +290,7 @@ void AnzeigenW(float wind)
     Serial.print("Anzeigen Wind: ");
     Serial.println(wind);
 #endif
-#ifdef SERVO
     WinkelW = Stellen(ZeigerW, WinkelW, (int)(180.5 - ziel), DELAY);
-#endif //SERVO
 }
 /**
  * @brief Anzeige der Mondphase
@@ -312,7 +311,5 @@ void AnzeigenM(float Mondphase)
     Serial.print("Anzeigen Mond: ");
     Serial.println(Mondphase);
 #endif
-#ifdef SERVO
     WinkelM = Stellen(ZeigerM, WinkelM, ziel, DELAY);
-#endif //SERVO
 }
