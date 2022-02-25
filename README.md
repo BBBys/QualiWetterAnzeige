@@ -1,6 +1,8 @@
 # Qualitative Wetteranzeige
-QualiWetterAnzeige
-
+    QualiWetterAnzeige
+---
+> in dieser Version Ansteuerung über Multiplexer PCA9685
+---
 Anzeige von Wetterdaten (Temperatur, Druck, Feuchte, Wind, Mondphase) als qualitative Werte (hoch/niedrig, stark/schwach ...) durch Zeiger, angetrieben von Servo-Motoren
 
 Berücksichtigt werden Temperatur, relative Luftfeuchte, Luftdruck und Windeschwindigkeit
