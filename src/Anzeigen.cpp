@@ -27,8 +27,13 @@
  * nach Umrechnung an Servo-Motoren übertragen.
  * 
  * @author Dr. Burkhard Borys, Zeller Ring 15, 34246 Vellmar, Deutschland
+<<<<<<< Updated upstream
  * @version 1.1
  * @date 21 18 16 Jan 2022 16 Dez 22 Nov 2021
+=======
+ * @version 2.1
+ * @date 17 15 9 Aug 25 Feb 21 18 16 Jan 2022 16 Dez 22 Nov 2021
+>>>>>>> Stashed changes
  * @copyright Copyright (c) 2021-2022 B. Borys
 */
 #include "wettertafel.h"
@@ -38,6 +43,15 @@
  * für Druck, Temperatur, Feuchtigkeit, Mondphase und Windstärke
  */
 Servo ZeigerT, ZeigerF, ZeigerD, ZeigerW, ZeigerM;
+<<<<<<< Updated upstream
+=======
+#else
+/**
+ * @brief die Adressen der Servos
+ * für Druck, Temperatur, Feuchtigkeit, Mondphase und Windstärke
+ */
+#endif
+>>>>>>> Stashed changes
 /// Jahreszeit 0: unbekannt, 1..4: Frühling..Winter
 uint8_t Jahreszeit = 0;
 uint8_t WinkelF = 90, WinkelT = 90, WinkelD = 90, WinkelW = 90, WinkelM = 90;
@@ -306,7 +320,6 @@ void AnzeigenW(float wind)
 void AnzeigenM(float Mondphase)
 {
     float ziel;
-    const int anzahl = 9;
     ziel = 180*Mondphase/(PI+PI);    // einfache lineare Umrechnung 
 #ifndef NDEBUG
     Serial.print("Anzeigen Mond: ");
